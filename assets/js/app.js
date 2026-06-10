@@ -78,6 +78,7 @@ function onSubmitPost(eve){
                             </div>`
             postContainer.prepend(col);
             spinner.classList.add('d-none')
+            snackBar('New Post Created successfully..','success')
         }
     }
 }
