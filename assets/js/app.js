@@ -157,10 +157,17 @@ function onPostUpdate(){
             card.querySelector('h3').innerHTML=updated_obj.title
             card.querySelector('p').innerHTML=updated_obj.body
 
+            card.querySelector('.card-header')
+            .setAttribute('title', updated_obj.title);
+
+            $(card.querySelector('.card-header')).tooltip('dispose');
+            $(card.querySelector('.card-header')).tooltip();
+
             formContainer.reset()
             addBtn.classList.remove('d-none');
             updateBtn.classList.add('d-none');
             spinner.classList.add('d-none')
+
 
             let updatedPost=document.getElementById(updateId)
             updatedPost.classList.add('updated-card')
