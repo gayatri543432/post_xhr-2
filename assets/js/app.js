@@ -23,26 +23,35 @@ function snackBar(msg,i){
     })
 }
 
+function toolTips(){
+  
+  $('[data-toggle="tooltip"]').tooltip()
+
+}
+
 function templating(arr){
     let res='';
     arr.forEach((p)=>{
         res+=` <div class="col-md-3 mb-3" id="${p.id}">
                 <div class="card h-100">
-                    <div class="card-header">
+                    <div class="card-header" data-toggle="tooltip" data-placement="top" title="${p.title}">
                         <h3>${p.title}</h3>
                     </div>
                     <div class="card-body">
                         <p>${p.body}</p>
                     </div>
                     <div class="card-footer d-flex justify-content-between">
-                        <i onclick="onEdit(this)" class="fa-solid fa-pen-to-square fa-2x text-primary"></i>
-                        <i onclick="onRmove(this)" class="fa-solid fa-trash-can fa-2x text-danger"></i>
+                        <i onclick="onEdit(this)" class="fa-solid fa-pen-to-square fa-2x text-primary"
+                        data-toggle="tooltip" data-placement="top" title="Edit Post"></i>
+                        <i onclick="onRmove(this)" class="fa-solid fa-trash-can fa-2x text-danger"
+                        data-toggle="tooltip" data-placement="top" title="Remove Post"></i>
 
                     </div>
                 </div>
             </div>`
     })
-    postContainer.innerHTML=res
+    postContainer.innerHTML=res;
+    toolTips()
 }
 
 function onSubmitPost(eve){
@@ -64,27 +73,31 @@ function onSubmitPost(eve){
             col.className='col-md-3  mb-3'
             col.id=res.id
             col.innerHTML=`<div class="card h-100">
-                                <div class="card-header">
+                                <div class="card-header"  data-toggle="tooltip" data-placement="top" title="${POST_OBJ.title}">
                                     <h3>${POST_OBJ.title}</h3>
                                 </div>
                                 <div class="card-body">
                                     <p>${POST_OBJ.body}</p>
                                 </div>
                                 <div class="card-footer d-flex justify-content-between">
-                                    <i onclick="onEdit(this)" class="fa-solid fa-pen-to-square fa-2x text-primary"></i>
-                                    <i onclick="onRmove(this)" class="fa-solid fa-trash-can fa-2x text-danger"></i>
+                                    <i onclick="onEdit(this)" class="fa-solid fa-pen-to-square fa-2x text-primary"
+                                    data-toggle="tooltip" data-placement="top" title="Edit Post"></i>
+                                    <i onclick="onRmove(this)" class="fa-solid fa-trash-can fa-2x text-danger"
+                                    data-toggle="tooltip" data-placement="top" title="Remove Post"></i>
 
                                 </div>
                             </div>`
             postContainer.prepend(col);
+            
             spinner.classList.add('d-none')
-            snackBar('New Post Created successfully..','success')
+            toolTips()
+            snackBar(`New Post with Id ${res.id} Created successfully..`,'success')
         }
     }
 }
 
 function fetchPost(){
-    spinner.classList.remove('d-none')
+  
     let xhr=new XMLHttpRequest();
     xhr.open('GET',POST_URL)
     xhr.send(null)
@@ -93,9 +106,9 @@ function fetchPost(){
             let data=JSON.parse(xhr.response)
             postArr=[...data]
             templating(data.reverse())
-            spinner.classList.add('d-none')
+            
         }else{
-            spinner.classList.add('d-none')
+            
             snackBar('something went wrong','error')
         }
     }
@@ -115,6 +128,10 @@ function onEdit(ele){
             bodyControl.value=res.body;
             userIDControl.value=res.userId
 
+            formContainer.scrollIntoView({
+                behavior:'smooth',
+                block:'center'
+            })
             addBtn.classList.add('d-none')
             updateBtn.classList.remove('d-none')
         }
@@ -145,6 +162,17 @@ function onPostUpdate(){
             updateBtn.classList.add('d-none');
             spinner.classList.add('d-none')
 
+            let updatedPost=document.getElementById(updateId)
+            updatedPost.classList.add('updated-card')
+            updatedPost.scrollIntoView({
+                behavior:'smooth',
+                block:'center'
+            })
+
+            setTimeout(() => {
+            updatedPost.classList.remove('updated-card')
+                
+            }, 3000);
             snackBar('Post updated successfilly..','success')
         }else{
             spinner.classList.add('d-none')

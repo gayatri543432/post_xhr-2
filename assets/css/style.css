@@ -29,3 +29,28 @@ body{
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+.fa-pen-to-square,.fa-trash-can{
+    cursor: pointer;
+    transition: .3s;
+}
+.fa-pen-to-square:hover,.fa-trash-can:hover{
+    transform: scale(1.1);
+}
+.updated-card .card{
+    animation: updated-card 3s ease-in-out;
+}
+
+@keyframes updated-card{
+    0%{
+        background-color: #fff3cd;
+        color: black;
+        transform: scale(1);
+    }
+
+  100%{
+        background-color: white;
+        color: black;
+
+        transform: scale(1);
+    }
+}
